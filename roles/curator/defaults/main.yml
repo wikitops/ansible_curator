@@ -1,0 +1,19 @@
+---
+
+elasticsearch_port: 9200
+elasticsearch_hostname: localhost
+
+curator_actions:
+  - order: 1
+    action: delete_indices
+    description: "Delete indices older than 7 days"
+    filters:
+      - filtertype: pattern
+        kind: prefix
+        value: index
+      - filtertype: age
+        source: name
+        direction: older
+        timestring: '%Y%m%d%H'
+        unit: days
+        unit_count: 7

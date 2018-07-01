@@ -1,0 +1,10 @@
+# {{ ansible_managed }}
+/var/log/curator/*.log {
+        daily
+        rotate 7
+        copytruncate
+        compress
+        delaycompress
+        missingok
+        notifempty
+}

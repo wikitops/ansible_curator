@@ -1,0 +1,49 @@
+---
+
+- name: CURATOR | Install dependencies
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - python-pip
+
+- name: CURATOR | Install
+  pip:
+    state: present
+    name: elasticsearch-curator
+
+- name: CURATOR | Create directories
+  file:
+    state: directory
+    path: "{{ item }}"
+    owner: root
+    group: root
+    mode: 0755
+  with_items:
+    - /opt/curator
+    - /var/log/curator
+
+- name: CURATOR | Configure
+  template:
+    src: "opt/curator/config.yml.j2"
+    dest: "/opt/curator/config.yml"
+    owner: root
+    group: root
+    mode: 0644
+
+- name: CURATOR | Configure logs rotation
+  template:
+    src: "etc/logrotate.d/curator.j2"
+    dest: "/etc/logrotate.d/curator"
+    owner: root
+    group: root
+    mode: 0644
+
+- name: CURATOR | Deploy YAML action file
+  template:
+    src: "opt/curator/curator_purge_data.yml.j2"
+    dest: "/opt/curator/curator_purge_data.yml"
+    owner: root
+    group: root
+    mode: 0644
+  tags: config
