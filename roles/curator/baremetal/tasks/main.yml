@@ -1,13 +1,6 @@
 ---
 
-- name: CURATOR | Install dependencies
-  package:
-    name: "{{ item }}"
-    state: present
-  with_items:
-    - python-pip
-
-- name: CURATOR | Install
+- name: CURATOR | Installation
   pip:
     state: present
     name: elasticsearch-curator

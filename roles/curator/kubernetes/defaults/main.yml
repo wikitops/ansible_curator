@@ -1,0 +1,58 @@
+---
+
+###
+# CURATOR
+###
+
+curator_version: 5.5.4
+
+# Actions
+curator_actions:
+  - name: delete_indices_older_7_days
+    order: 1
+    action: delete_indices
+    description: "Delete indices older than 7 days"
+    filters:
+      - filtertype: pattern
+        kind: prefix
+        value: index
+      - filtertype: age
+        source: name
+        direction: older
+        timestring: '%Y%m%d%H'
+        unit: days
+        unit_count: 7
+
+###
+# ELASTICSEARCH
+###
+
+# Port
+elasticsearch_port: 9200
+
+# Hostname
+elasticsearch_hostname: localhost
+
+###
+# KUBERNETES
+###
+
+# Namespace
+curator_namespace:
+  - name: curator
+    state: present
+
+# Deployment
+curator_cronjob:
+  image: wikitops/curator:{{ curator_version }}
+  name: curator
+  namespace: curator
+  schedule: "00 00 * * *"
+
+curator_configmap_config:
+  name: curator-config
+  namespace: curator
+
+curator_configmap_pipeline:
+  name: curator-pipeline
+  namespace: curator

@@ -1,6 +1,7 @@
 ---
 
 # {{ ansible_managed }}
+
 actions:
 {% for tasks in curator_actions %}
   {{ tasks.order }}:

@@ -1,0 +1,24 @@
+---
+
+- name: CURATOR ON KUBERNETES | Create namespace
+  k8s:
+    name: "{{ item.name }}"
+    api_version: v1
+    kind: Namespace
+    state: "{{ item.state }}"
+  with_items: "{{ curator_namespace }}"
+
+- name: CURATOR ON KUBERNETES | Manage Config Maps to configure Curator
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'configmap-config.yaml') | from_yaml }}"
+
+- name: CURATOR ON KUBERNETES | Manage Config Maps to configure pipelines
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'configmap-pipeline.yaml') | from_yaml }}"
+
+- name: CURATOR ON KUBERNETES | Manage CronJob
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'cronjob.yaml') | from_yaml }}"

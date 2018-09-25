@@ -1,8 +1,20 @@
 ---
 
+###
+# ELASTICSEARCH
+###
+
+# Port
 elasticsearch_port: 9200
+
+# Hostname
 elasticsearch_hostname: localhost
 
+###
+# CURATOR
+###
+
+# Actions
 curator_actions:
   - order: 1
     action: delete_indices

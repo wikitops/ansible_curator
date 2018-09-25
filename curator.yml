@@ -1,7 +1,11 @@
 ---
 
-- hosts: all
+- hosts: curator
   remote_user: vagrant
   become: yes
+  vars:
+    curator_on_baremetal: true
+    curator_on_docker: false
+    curator_on_kubernetes: false
   roles:
     - curator

@@ -1,0 +1,48 @@
+---
+
+- name: CURATOR ON DOCKER | Create directories
+  file:
+    state: directory
+    path: "{{ item }}"
+    owner: root
+    group: root
+    mode: 0755
+  with_items:
+    - /opt/curator
+    - /var/log/curator
+
+- name: CURATOR ON DOCKER | Template Curator config files
+  template:
+    src: opt/curator/{{ item }}.yaml.j2
+    dest: /opt/curator/{{ item }}.yaml
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+    - config
+
+- name: CURATOR ON DOCKER | Template Curator pipeline files
+  template:
+    src: opt/curator/template.yaml.j2
+    dest: /opt/curator/{{ item.name }}.yaml
+    owner: root
+    group: root
+    mode: 0644
+  with_items: "{{ curator_actions }}"
+
+- name: CURATOR ON DOCKER | Create the network
+  docker_network:
+    name: "{{ item.name }}"
+    state: "{{ item.state }}"
+  with_items: "{{ curator_docker_network }}"
+
+- name: CURATOR ON DOCKER | Deploy the container
+  docker_container:
+    name: "{{ item.name }}"
+    image: "{{ item.image }}"
+    state: "{{ item.state }}"
+    restart: yes
+    networks:
+      - name: "{{ item.network }}"
+    volumes: "{{ item.volumes }}"
+  with_items: "{{ curator_docker }}"

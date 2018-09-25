@@ -1,0 +1,61 @@
+---
+
+###
+# CURATOR
+###
+
+# Version
+curator_version: 5.5.4
+
+# Users
+curator_user: curator
+curator_group: curator
+
+# Server configuration
+curator_server_host: "{{ inventory_hostname }}"
+curator_server_name: "{{ ansible_hostname }}"
+
+# Actions
+curator_actions:
+  - name: delete_indices_older_7_days
+    order: 1
+    action: delete_indices
+    description: "Delete indices older than 7 days"
+    filters:
+      - filtertype: pattern
+        kind: prefix
+        value: index
+      - filtertype: age
+        source: name
+        direction: older
+        timestring: '%Y%m%d%H'
+        unit: days
+        unit_count: 7
+
+###
+# DOCKER
+###
+
+# Network
+curator_docker_network:
+  - name: curator
+    state: present
+
+# Stack
+curator_docker:
+  - name: curator
+    image: wikitops/curator:{{ curator_version }}
+    state: present
+    network: curator
+    volumes:
+      - /opt/curator
+
+###
+# ELASTICSEARCH
+###
+
+# Port
+elasticsearch_port: 9200
+
+# Hostname
+elasticsearch_hostname: localhost

@@ -1,0 +1,34 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ curator_cronjob.name }}
+  namespace: {{ curator_cronjob.namespace }}
+spec:
+  schedule: "{{ curator_cronjob.schedule }}"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: {{ curator_cronjob.name }}
+            image: {{ curator_cronjob.image }}
+            args:
+              - /bin/sh
+              - -c
+              - curator
+              - --config
+              - /opt/curator/config
+              - /opt/curator/pipeline
+            volumeMounts:
+              - name: config-volume
+                mountPath: /opt/curator/config
+              - name: pipeline-volume
+                mountPath: /opt/curator/pipeline
+          volumes:
+            - name: config-volume
+              configMap:
+                name: curator-config
+            - name: pipeline-volume
+              configMap:
+                name: curator-pipeline
+          restartPolicy: OnFailure

@@ -1,0 +1,20 @@
+---
+
+# {{ ansible_managed }}
+
+actions:
+{% for tasks in curator_actions %}
+  {{ tasks.order }}:
+    action: {{ tasks.action }}
+    description: "{{ tasks.description }}"
+    options:
+      ignore_empty_list: True
+      continue_if_exception: True
+    filters:
+{% for filter in tasks.filters %}
+      -
+{% for key, value in filter.iteritems() %}
+        {{ key }}: "{{ value }}"
+{% endfor %}
+{% endfor %}
+{% endfor %}

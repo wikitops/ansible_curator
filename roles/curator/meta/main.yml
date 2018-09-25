@@ -1,0 +1,12 @@
+---
+
+dependencies:
+
+  - role: curator/baremetal
+    when: curator_on_baremetal
+
+  - role: curator/docker
+    when: curator_on_docker
+
+  - role: curator/kubernetes
+    when: curator_on_kubernetes
