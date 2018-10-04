@@ -122,7 +122,7 @@ If everything run has expected, you should have a namespace and a pod named cura
 
 #### Destroy
 
-To destroy on what Vagrant has created, just run this command :
+To destroy the Vagrant resources created, just run this command :
 
 ```bash
 $ vagrant destroy
