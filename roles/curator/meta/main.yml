@@ -3,10 +3,10 @@
 dependencies:
 
   - role: curator/baremetal
-    when: curator_on_baremetal
+    when: curator_install_type == "baremetal"
 
   - role: curator/docker
-    when: curator_on_docker
+    when: curator_install_type == "docker"
 
   - role: curator/kubernetes
-    when: curator_on_kubernetes
+    when: curator_install_type == "kubernetes"

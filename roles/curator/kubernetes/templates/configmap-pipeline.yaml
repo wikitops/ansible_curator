@@ -16,7 +16,7 @@ data:
         filters:
     {% for filter in tasks.filters %}
           -
-    {% for key, value in filter.iteritems() %}
+    {% for key, value in filter.items() %}
             {{ key }}: "{{ value }}"
     {% endfor %}
     {% endfor %}

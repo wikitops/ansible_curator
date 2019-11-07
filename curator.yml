@@ -4,8 +4,6 @@
   remote_user: vagrant
   become: yes
   vars:
-    curator_on_baremetal: true
-    curator_on_docker: false
-    curator_on_kubernetes: false
+    curator_install_type: baremetal
   roles:
     - curator

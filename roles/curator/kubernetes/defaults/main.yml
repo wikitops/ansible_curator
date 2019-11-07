@@ -4,7 +4,7 @@
 # CURATOR
 ###
 
-curator_version: 5.5.4
+curator_version: 5.8.1
 
 # Actions
 curator_actions:
